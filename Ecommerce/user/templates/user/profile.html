@@ -1,0 +1,41 @@
+{% extends "user/base.html" %}
+
+{% load crispy_forms_tags %}
+{% block style %}
+
+.profile{
+  display: flex;
+  justify-content: center;
+  margin-left: 50px;
+  font-size: 70px;
+}
+
+{% endblock style %}
+{% block content %}
+
+
+
+<div class="container rounded bg-white mt-5 mb-5">
+    <div class="jumbotron" style="background-color: rgb(233, 233, 233);">
+    <div>
+    <span class="profile">{{ event}}</span>
+    </div>
+    <div class="content-section">
+      <div class="media">
+      </div>
+        <div class="col-md-12 border-right">
+        <form method='POST' enctype="multipart/form-data">
+            {% csrf_token %}
+                <legend class="border-bottom mb-4">Profile</legend>
+                 {{ u_form|crispy }}
+                 {{ p_form|crispy }}
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Update</button>
+            </div>
+        </form>
+    </div>
+</div>
+</div>
+</div>
+
+{% endblock content %}

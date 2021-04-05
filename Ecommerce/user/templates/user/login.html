@@ -1,0 +1,36 @@
+{% extends "user/base.html" %}
+{% load crispy_forms_tags %}
+{% block style %}
+ body{
+     background-color: rgb(10, 60, 66);
+ }
+{% endblock style %}
+{% block content %}
+<div class="container">
+     <div class="jumbotron" style="background-color: rgb(233, 233, 233);">
+        {% if messages %}
+            <ul class="messages">
+                {% for message in messages %}
+                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
+                {% endfor %}
+            </ul>
+    {% endif %}
+        <form action="{% url 'user-login' %}" method='POST'>
+            {% csrf_token %}
+            <fieldset class="form-group">
+                <legend class="border-bottom mb-4" style="text-align : center;">Log In</legend>
+                {{ form|crispy }}
+            </fieldset>
+            <div class="form-group">
+                <button class="btn btn-outline-info" type="submit">Login</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">Not a Member?<a class="ml-2" href="{% url 'user-register'%}">Register</a></small>
+        </div>
+        <div class="border-top pt-3">
+            <small class="text-muted">Forgot Password?<a class="ml-2" href="{% url 'password_reset'%}">Forgot Password</a></small>
+        </div>
+    </div>
+    </div>
+{% endblock content %}
