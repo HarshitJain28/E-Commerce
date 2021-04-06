@@ -1,0 +1,41 @@
+{% extends "user/base.html" %}
+
+
+{% block content %}
+<div class='container mt-5'>
+<table class="table table-striped">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Price</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for product in cart %}
+  {% if product.quantity > 0 %}
+     <tr>
+      <th scope="row">{{forloop.counter}}</th>
+      <td>{{product.product.product_name|slice:'0:20' }}..</td>
+      <td>{{product.quantity}}</td>
+      <td>{{product.product.product_price}}</td>
+      <td>{{product.total_price}}</td>
+      <td><a href="{{ product.product.get_absolute_url }}">Show Product</a></td>
+    </tr>
+  {% endif %}
+{% endfor %}
+<tr>
+      <th scope="row"></th>
+      <td><strong class='px-5'>Total</strong></td>
+      <td>{{total_items}}</td>
+      <td></td>
+      <td>{{total_price}}</td>
+      <td></td>
+    </tr>
+  </tbody>
+</table>
+</div>
+{% endblock content %}
+

@@ -1,9 +1,84 @@
-from django.shortcuts import render
-from .models import Product
+from django.shortcuts import get_object_or_404, redirect, render
+from .models import Product, Order, Cart
 from math import ceil
+from django.contrib import messages
+from django.utils import timezone
+from django.contrib.auth.decorators import login_required
 # Create your views here.
 
+
 def index(request):
+    all_products = []
     prod = Product.objects.all()
-    num_rows = ceil(len(prod)/4)
-    return render(request, 'shop/index.html', {'products': prod, 'num_rows': range(num_rows) } )
+    catProds = Product.objects.values('product_category')
+    cats = {item['product_category'] for item in catProds}
+    for cat in cats:
+        prod = Product.objects.filter(product_category=cat)
+        all_products.append(prod)
+    return render(request, 'shop/index.html', {'all_products': all_products})
+
+
+def detail_product(request, id):
+    product = Product.objects.filter(id=id)
+    return render(request, 'shop/productDetailed.html', {'product': product[0]})
+
+@login_required
+def cart(request):
+    if  request.user.is_authenticated:
+        cart = Cart.objects.filter(user = request.user, order_status=False)
+        total_price = 0
+        for item in cart:
+            total_price += int(item.total_price())
+        context = {'cart':cart, 'total_price': total_price}
+        return render(request, 'shop/cart.html', context)
+
+
+
+@login_required
+def add_to_cart(request, id):
+    product = Product.objects.get(id=id)
+    cart, created = Cart.objects.get_or_create(
+        product=product, user=request.user, order_status=False)
+    order_state = Order.objects.filter(user=request.user, order_status=False)
+    if order_state.exists():
+        order = order_state[0]
+        if order.products.filter(product=product).exists():
+            cart.quantity += 1
+            messages.info(request, "Product quantity updated")
+        else:
+            order.products.add(cart)
+            cart.quantity = 1
+            messages.info(request, "Product Added to the cart")
+    else:
+        order = Order.objects.create(
+            user=request.user, order_date=timezone.now())
+        order.products.add(cart)
+        cart.quantity = 1
+        messages.info(request, "Product Added to the cart")
+    cart.save()
+    return redirect('detail-product', id=id)
+
+@login_required
+def remove_from_cart(request, id):
+    product = Product.objects.get(id=id)
+    order_state = Order.objects.filter(user=request.user, order_status=False)
+    if order_state.exists():
+        order = order_state[0]
+        if order.products.filter(product=product).exists():
+            cart = Cart.objects.filter(
+                product=product, user=request.user, order_status=False)[0]
+            if cart.quantity == 1:
+                cart.quantity = 0
+                order.products.remove(cart)
+                cart.save()
+                messages.info(request, "Product removed from the cart")
+            else:
+                cart.quantity -= 1
+                cart.save()
+                messages.info(request, "Product quantity updated")
+        else:
+            messages.warning(
+                request, "The product does not exist in your cart")
+    else:
+        messages.warning(request, "No items in the cart")
+    return redirect('detail-product', id=id)

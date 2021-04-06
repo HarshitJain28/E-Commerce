@@ -4,23 +4,30 @@
 {% endblock style %}
 {% block content %}
 
-<h1>Home Page</h1>
-<div class="container">
+<div class="container mt-3">
+{% for products in all_products %}
+    <h3 class='mb-4'><span class="badge badge-primary p-2">{{ products.0.product_category }}</span></h3>
     <div class="row">
         {% for product in products %}
-        <div class="col-3 px-2">
-        <div class="card" style="width: 18rem;">
-            <img src="{{ product.product_image.url }}" class="card-img-top" style='height: 255px;' alt="..." >
-            <div class="card-body">
-              <h5 class="card-title">{{ product.product_name|slice:"0:45" }} ..</h5>
-              <p class="card-text">{{ product.product_description|slice:"0:85" }} ...</p>
-              <a href="#" class="btn btn-primary">Go somewhere</a>
-            </div>
+        <div class="col-md-6">
+        <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+          <h3 class="mb-0">{{product.product_name|slice:"0:20"}}</h3>
+          <div class="mb-1 text-muted">Rs. {{product.product_price}}</div>
+          <p class="card-text">{{ product.product_description|slice:"0:75" }}..</p>
+          <a href="{{ product.get_absolute_url }}" class="stretched-link">View Product</a>
+        </div>
+        <div class="col-auto d-none d-lg-block">
+          <img src="{{ product.product_image.url }}" class="card-img-top" style='height: 255px;' alt="..." >
+
           </div>
         </div>
+      </div>
         {% endfor %}   
     </div>
+    {% endfor %}
 </div>
+
 
 
 

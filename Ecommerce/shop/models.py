@@ -1,9 +1,10 @@
 from django.db import models
 from PIL import Image
+from user.models import User
+from django.urls import reverse
 
 # Create your models here.
 class Product(models.Model):
-    product_id = models.AutoField
     product_name = models.CharField(max_length=100)
     product_category = models.CharField(max_length=100)
     product_description = models.CharField(max_length=500)
@@ -12,6 +13,15 @@ class Product(models.Model):
 
     def __str__(self):
         return (self.product_name[:15] + ' | Category: ' + self.product_category)
+
+    def get_absolute_url(self):
+        return reverse("detail-product", kwargs={"id": self.id})
+
+    def add_to_cart(self):
+        return reverse('add-to-cart', kwargs={"id": self.id})
+    
+    def remove_from_cart(self):
+        return reverse('remove-from-cart', kwargs={"id": self.id})
 
     def save(self,*args,**kwargs):
         super().save(*args,**kwargs)
@@ -22,3 +32,25 @@ class Product(models.Model):
             output_size = (300, 300)
             img.thumbnail(output_size)
             img.save(self.product_image.path)
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    order_status = models.BooleanField(default=False)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=0)
+
+    def total_price(self):
+        return self.quantity * self.product.product_price
+
+    def __str__(self):
+        return f"{self.product} quantity: {self.quantity}"
+
+class Order(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    products = models.ManyToManyField(Cart)
+    order_date = models.DateField()
+    order_status = models.BooleanField(default=False)
+
+    def __str__(self):
+        return self.user.username
