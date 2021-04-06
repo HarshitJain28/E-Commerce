@@ -1,7 +1,8 @@
 from django.urls import path, include
 from . import views
 from django.contrib.auth import views as auth_views
-
+from django.conf import settings
+from django.conf.urls.static import static
 urlpatterns = [
     path('', views.profile, name='user-profile'),
     path('register/', views.register, name='user-register'),
@@ -12,4 +13,7 @@ urlpatterns = [
     path('password-reset-complete/',auth_views.PasswordResetCompleteView.as_view(template_name='user/password_reset_complete.html'), name='password_reset_complete'),
     path('password-reset-confirm/<uidb64>/<token>/',auth_views.PasswordResetConfirmView.as_view(template_name='user/password_reset_confirm.html'), name='password_reset_confirm'),
 
-]
+] 
+
+if settings.DEBUG:
+	urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

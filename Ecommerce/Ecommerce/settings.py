@@ -24,7 +24,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'lm6^=6u0co*f6^9%_o6js&yp5_!*(=zir31@0m9up43^acz!f('
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = TEMPLATE_DEBUG = True
 
 ALLOWED_HOSTS = []
 
@@ -33,6 +33,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'user.apps.UserConfig',
+    'shop.apps.ShopConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -122,6 +123,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
+
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 LOGIN_REDIRECT_URL='user-profile'
@@ -135,3 +139,5 @@ EMAIL_HOST_USER = os.environ.get('django_user')
 EMAIL_HOST_PASSWORD = os.environ.get('django_pass')
 
 DEFAULT_FROM_EMAIL = 'noreply<no_reply@domain.com>'
+
+
