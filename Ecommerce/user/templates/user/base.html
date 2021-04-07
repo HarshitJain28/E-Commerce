@@ -31,7 +31,7 @@
     color: #fff;
     padding: 0 5px;
     vertical-align: top;
-    margin-left: -10px; 
+    margin-left: -20px; 
 }
     {% block style %}{% endblock style %}
     </style>
@@ -39,7 +39,7 @@
   <body>
 
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">Shopify</a>
+  <a class="navbar-brand" href="{% url 'home' %}">Shopify</a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
@@ -47,18 +47,20 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only">(current)</span></a>
+        <a class="nav-link" href="{% url 'home' %}">Home</span></a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+      {% if user.is_authenticated%}
+       <li class="nav-item active">
+        <a class="nav-link" href="{% url 'past-orders' %}">Order History</a>
       </li>
+      {% endif %}
     </ul>
     
     <div class="navbar-nav">
                 {% if user.is_authenticated%}
                 <li class="nav-item">
-                <a href="{% url 'cart' %}" class="fa mt-2" style="font-size:24px">&#xf07a;</a>
-                  <span class='badge badge-warning' id='lblCartCount'>{{ total_items }}</span>
+                <a href="{% url 'cart' %}" class="fa mt-2 mr-2" style="font-size:24px">&#xf07a;</a>
+                  <span class='badge badge-warning mr-3' id='lblCartCount'>{{ total_items }}</span>
                 </li>
                   <a class="nav-item nav-link" href="{% url 'user-profile' %}">Profile</a>
                   <a class="nav-item nav-link" href="{% url 'user-logout' %}">Logout</a>

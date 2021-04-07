@@ -38,8 +38,14 @@ def checkout(request):
     user = User.objects.filter(username = request.user.username)[0]
     cart = Cart.objects.filter(user = request.user, cart_status=False)
     total_price = 0
+    total_items = 0
     for item in cart:
         total_price += int(item.total_price())
+        total_items += item.quantity
+    order = Order.objects.filter(user=request.user, order_status=False)[0]
+    order.order_price = total_price
+    order.order_items = total_items
+    order.save()
     context = {'cart':cart, 'total_price': total_price, 'user':user}
     return render(request, 'shop/checkout.html', context)
 
@@ -101,5 +107,6 @@ def order_confirm(request):
     order = Order.objects.filter(user=request.user, order_status=False)[0]
     order.order_status = True
     order.order_date = timezone.now()
+    order.order_address = request.user.profile.address
     order.save()
     return render(request, 'shop/orderConfirm.html')

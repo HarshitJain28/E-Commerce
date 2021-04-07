@@ -1,0 +1,62 @@
+{% extends "user/base.html" %}
+
+
+{% block content %}
+<div class="container">
+{% for order in orders %}
+<div class="card m-5">
+  <div class="card-header">
+    <strong>Order Id: &nbsp;</strong> #{{ order.id }}
+    <span style="float: right; margin-right: 50px;"><strong>Order Date: &nbsp;</strong> {{ order.order_date }}</span>
+  </div>
+  <div class="row">
+  <div class="col-7">
+    <h5 class='text-center mt-3'>Order Details</h5>
+  <table class="table table-striped">
+    <thead>
+      <tr>
+        <th scope="col">Product</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Price</th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for product in order.products.all %}
+       <tr>
+        <td>{{product.product.product_name|slice:'0:20' }}..</td>
+        <td>{{product.quantity}}</td>
+        <td>{{product.total_price}}</td>
+      </tr>
+  {% endfor %}
+  <tr>
+    <td><strong>Total</strong></td>
+    <td>{{order.order_items}}</td>
+    <td>{{order.order_price}}</td>
+  </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="col-5">
+    <h5 class="text-center mt-2">Shipping Details</h5>
+    <hr>
+    <ul style="list-style-type:none;">
+        
+        <li> <strong>First Name:</strong> {{ order.user.first_name }}</li>
+        <li> <strong>Last Name:</strong> {{ order.user.last_name }}</li>
+        <li> <strong>Email:</strong> {{ order.user.email }}</li>
+        <li> <strong>Contact:</strong> {{ order.user.profile.phone_number }}</li>
+        <li> <strong>Order Delivered At:</strong> {{ order.order_address }}</li>
+    </ul>
+   
+</div>
+</div>
+</div>
+{% endfor %}
+</div>
+
+
+{% endblock content %}
+
+
+

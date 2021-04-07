@@ -52,6 +52,9 @@ class Order(models.Model):
     products = models.ManyToManyField(Cart)
     order_date = models.DateField(blank=True, null=True)
     order_status = models.BooleanField(default=False)
+    order_address = models.CharField(max_length=500, default='')
+    order_price = models.PositiveIntegerField(default=0)
+    order_items = models.PositiveIntegerField(default=0)
 
     def __str__(self):
         return f"{self.user.username} | OrderId: {self.id}"
