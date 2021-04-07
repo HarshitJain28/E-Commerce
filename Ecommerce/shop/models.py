@@ -36,7 +36,8 @@ class Product(models.Model):
 
 class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
-    order_status = models.BooleanField(default=False)
+    cart_status = models.BooleanField(default=False)
+    cart_date = models.DateField(blank=True, null=True)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0)
 
@@ -44,13 +45,13 @@ class Cart(models.Model):
         return self.quantity * self.product.product_price
 
     def __str__(self):
-        return f"{self.product} quantity: {self.quantity}"
+        return f"{self.user.username} | cartID: {self.id} | cartProduct: {self.product}"
 
 class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     products = models.ManyToManyField(Cart)
-    order_date = models.DateField()
+    order_date = models.DateField(blank=True, null=True)
     order_status = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.user.username
+        return f"{self.user.username} | OrderId: {self.id}"

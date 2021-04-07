@@ -1,0 +1,114 @@
+{% extends "user/base.html" %}
+
+{% block style %}
+<style>
+input::placeholder {
+    overflow: visible;
+}
+</style>
+{% endblock style %}
+
+{% block content %}
+<div class='container mt-5'>
+<h3> Order Details </h3>
+<table class="table table-striped mt-2">
+  <thead>
+    <tr>
+      <th scope="col">Product</th>
+      <th scope="col">Quantity</th>
+      <th scope="col">Total</th>
+    </tr>
+  </thead>
+  <tbody>
+  {% for product in cart %}
+  {% if product.quantity > 0 %}
+     <tr>
+      <td>{{product.product.product_name|slice:'0:20' }}..</td>
+      <td>{{product.quantity}}</td>
+      <td>{{product.total_price}}</td>
+    </tr>
+  {% endif %}
+{% endfor %}
+<tr>
+      <th scope="row"><strong class='px-5'>Total</strong></th>
+      <td></td>
+      <td>{{total_price}}</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+<div class="container">
+    <h3>Shipping Details</h3>
+    <div class="row py-2">
+        <div class="col-sm-6">
+            <label>First name</label>
+            <input type="text" class="form-control" placeholder= {{user.first_name}} disabled>
+        </div>
+
+        <div class="col-sm-6">
+          <label >Last name</label>
+          <input type="text" class="form-control" placeholder= {{user.last_name}} disabled>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-sm-6">
+          <label>Email</label>
+          <input class="form-control" placeholder= {{ user.email }} disabled>
+        </div>
+
+        <div class="col-sm-6">
+            <label>Phone Number</label>
+            <input class="form-control" placeholder = {{ user.profile.phone_number }} disabled>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-12">
+          <label>Address</label>
+          <textarea class="form-control" disabled placeholder="{{ user.profile.address}}" style="resize: none; height: 65px;"></textarea>
+        </div>
+    </div>
+    <div class="row py-2">
+        <div class="col-sm-4">
+          <label>City</label>
+          <input class="form-control" placeholder= {{ user.profile.city }} disabled>
+        </div>
+        <div class="col-sm-4">
+            <label>State</label>
+            <input class="form-control" placeholder= {{ user.profile.state }} disabled>
+          </div>
+        <div class="col-sm-4">
+            <label>Zipcode</label>
+            <input class="form-control" placeholder= {{ user.profile.zipcode }} disabled>
+        </div>
+    </div>
+    <a href="{% url 'user-profile' %}?next={% url 'checkout' %}" class="btn btn-info m-3">Change Details </a>
+    <!-- <a href="#" class="btn btn-info m-3 px-3">Place Order</a> -->
+    <!-- Button trigger modal -->
+<!-- Button trigger modal -->
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
+    Place Order
+  </button>
+  
+  <!-- Modal -->
+  <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">Order Confirmation</h5>
+        </div>
+        <div class="modal-body">
+          Name: {{user.first_name}} {{user.last_name}}<br>
+          Address: {{user.profile.address}}<br>
+          Amount To Be Paid: &#x20B9; {{ total_price }}<br><br>
+          Do you wish to continue?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <a href="{% url 'order-confirm' %}" type="button" class="btn btn-primary">Place Order</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock content %}
+

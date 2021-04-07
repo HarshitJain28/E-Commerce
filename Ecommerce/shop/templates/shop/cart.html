@@ -6,18 +6,17 @@
 <table class="table table-striped">
   <thead>
     <tr>
-      <th scope="col">#</th>
       <th scope="col">Product</th>
       <th scope="col">Quantity</th>
       <th scope="col">Price</th>
       <th scope="col">Total</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
   {% for product in cart %}
   {% if product.quantity > 0 %}
      <tr>
-      <th scope="row">{{forloop.counter}}</th>
       <td>{{product.product.product_name|slice:'0:20' }}..</td>
       <td>{{product.quantity}}</td>
       <td>{{product.product.product_price}}</td>
@@ -27,8 +26,7 @@
   {% endif %}
 {% endfor %}
 <tr>
-      <th scope="row"></th>
-      <td><strong class='px-5'>Total</strong></td>
+      <th scope="row"><strong class='px-5'>Total</strong></th>
       <td>{{total_items}}</td>
       <td></td>
       <td>{{total_price}}</td>
@@ -36,6 +34,15 @@
     </tr>
   </tbody>
 </table>
+
+{% ifequal 0 total_items  %}
+<h2 class="text-center pt-3" style="font-family: 'BioRhyme', serif; color: rgb(42, 6, 126);"> Add Products To Your Cart </h2>
+{% else %}
+<a href="{% url 'checkout' %}" class="btn btn-info mt-3">Checkout</a>
+{% endifequal %}
+
+
 </div>
+
 {% endblock content %}
 

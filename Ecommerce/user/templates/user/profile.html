@@ -30,7 +30,7 @@
                  {{ u_form|crispy }}
                  {{ p_form|crispy }}
             <div class="form-group">
-                <button class="btn btn-outline-info" type="submit">Update</button>
+                <button class="btn btn-outline-info" name="next" value="{{ request.GET.next }" type="submit">Update</button>
             </div>
         </form>
     </div>

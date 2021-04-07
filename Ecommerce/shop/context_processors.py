@@ -3,7 +3,7 @@ from django.contrib.auth.decorators import login_required
 
 def cart_processor(request):
     if request.user.is_authenticated:
-        cart = Cart.objects.filter(user = request.user, order_status=False)
+        cart = Cart.objects.filter(user = request.user, cart_status=False)
         if cart.exists():
             total_items = 0
             for item in cart:
