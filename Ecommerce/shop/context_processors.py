@@ -1,5 +1,4 @@
 from .models import Cart
-from django.contrib.auth.decorators import login_required
 
 
 def cart_processor(request):

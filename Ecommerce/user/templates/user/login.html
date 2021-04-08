@@ -8,13 +8,6 @@
 {% block content %}
 <div class="container">
      <div class="jumbotron" style="background-color: rgb(233, 233, 233);">
-        {% if messages %}
-            <ul class="messages">
-                {% for message in messages %}
-                <li{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</li>
-                {% endfor %}
-            </ul>
-    {% endif %}
         <form action="{% url 'user-login' %}" method='POST'>
             {% csrf_token %}
             <fieldset class="form-group">
