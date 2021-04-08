@@ -13,13 +13,12 @@
         <div class="row g-0 border rounded overflow-hidden flex-md-row mb-4 shadow-sm position-relative">
         <div class="col p-4 d-flex flex-column position-static">
           <h3 class="mb-0">{{product.product_name|slice:"0:20"}}</h3>
-          <div class="mb-1 text-muted">Rs. {{product.product_price}}</div>
+          <div class="mb-1 text-muted">&#x20B9; {{product.product_price}}</div>
           <p class="card-text">{{ product.product_description|slice:"0:75" }}..</p>
           <a href="{{ product.get_absolute_url }}" class="stretched-link">View Product</a>
         </div>
-        <div class="col-auto d-none d-lg-block">
-          <img src="{{ product.product_image.url }}" class="card-img-top" style='height: 255px;' alt="..." >
-
+        <div class="col d-none d-lg-block">
+          <img src="{{ product.product_image.url }}" class="card-img-top" style='height: 255px; width: 300px;' alt="..." >
           </div>
         </div>
       </div>

@@ -19,8 +19,8 @@
      <tr>
       <td>{{product.product.product_name|slice:'0:20' }}..</td>
       <td>{{product.quantity}}</td>
-      <td>{{product.product.product_price}}</td>
-      <td>{{product.total_price}}</td>
+      <td>&#x20B9; {{product.product.product_price}}</td>
+      <td>&#x20B9; {{product.total_price}}</td>
       <td><a href="{{ product.product.get_absolute_url }}">Show Product</a></td>
     </tr>
   {% endif %}
@@ -29,7 +29,7 @@
       <th scope="row"><strong class='px-5'>Total</strong></th>
       <td>{{total_items}}</td>
       <td></td>
-      <td>{{total_price}}</td>
+      <td>&#x20B9; {{total_price}}</td>
       <td></td>
     </tr>
   </tbody>

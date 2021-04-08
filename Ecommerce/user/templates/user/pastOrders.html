@@ -3,7 +3,7 @@
 
 {% block content %}
 <div class="container">
-{% for order in orders %}
+{% for order in orders|slice:"::-1" %}
 <div class="card m-5">
   <div class="card-header">
     <strong>Order Id: &nbsp;</strong> #{{ order.id }}
@@ -25,13 +25,13 @@
        <tr>
         <td>{{product.product.product_name|slice:'0:20' }}..</td>
         <td>{{product.quantity}}</td>
-        <td>{{product.total_price}}</td>
+        <td>&#x20B9;{{product.total_price}}</td>
       </tr>
   {% endfor %}
   <tr>
     <td><strong>Total</strong></td>
     <td>{{order.order_items}}</td>
-    <td>{{order.order_price}}</td>
+    <td>&#x20B9;{{order.order_price}}</td>
   </tr>
     </tbody>
   </table>

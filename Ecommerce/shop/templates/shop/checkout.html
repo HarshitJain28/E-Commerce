@@ -25,14 +25,14 @@ input::placeholder {
      <tr>
       <td>{{product.product.product_name|slice:'0:20' }}..</td>
       <td>{{product.quantity}}</td>
-      <td>{{product.total_price}}</td>
+      <td>&#x20B9;{{product.total_price}}</td>
     </tr>
   {% endif %}
 {% endfor %}
 <tr>
       <th scope="row"><strong class='px-5'>Total</strong></th>
       <td></td>
-      <td>{{total_price}}</td>
+      <td>&#x20B9;{{total_price}}</td>
     </tr>
   </tbody>
 </table>
@@ -82,7 +82,6 @@ input::placeholder {
         </div>
     </div>
     <a href="{% url 'user-profile' %}?next={% url 'checkout' %}" class="btn btn-info m-3">Change Details </a>
-    <!-- <a href="#" class="btn btn-info m-3 px-3">Place Order</a> -->
     <!-- Button trigger modal -->
 <!-- Button trigger modal -->
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
