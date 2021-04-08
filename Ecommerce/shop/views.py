@@ -1,9 +1,7 @@
-from django.shortcuts import get_object_or_404, redirect, render
+from django.shortcuts import redirect, render
 from .models import Product, Order, Cart
-from math import ceil
 from django.contrib import messages
 from django.utils import timezone
-from user.models import Profile
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 # Create your views here.
@@ -24,19 +22,21 @@ def detail_product(request, id):
     product = Product.objects.filter(id=id)
     return render(request, 'shop/productDetailed.html', {'product': product[0]})
 
+
 @login_required
 def cart(request):
-    cart = Cart.objects.filter(user = request.user, cart_status=False)
+    cart = Cart.objects.filter(user=request.user, cart_status=False)
     total_price = 0
     for item in cart:
         total_price += int(item.total_price())
-    context = {'cart':cart, 'total_price': total_price}
+    context = {'cart': cart, 'total_price': total_price}
     return render(request, 'shop/cart.html', context)
+
 
 @login_required
 def checkout(request):
-    user = User.objects.filter(username = request.user.username)[0]
-    cart = Cart.objects.filter(user = request.user, cart_status=False)
+    user = User.objects.filter(username=request.user.username)[0]
+    cart = Cart.objects.filter(user=request.user, cart_status=False)
     total_price = 0
     total_items = 0
     for item in cart:
@@ -46,14 +46,15 @@ def checkout(request):
     order.order_price = total_price
     order.order_items = total_items
     order.save()
-    context = {'cart':cart, 'total_price': total_price, 'user':user}
+    context = {'cart': cart, 'total_price': total_price, 'user': user}
     return render(request, 'shop/checkout.html', context)
+
 
 @login_required
 def add_to_cart(request, id):
     product = Product.objects.get(id=id)
     cart, created = Cart.objects.get_or_create(
-        product=product, user=request.user, cart_status=False, cart_date = timezone.now())
+        product=product, user=request.user, cart_status=False, cart_date=timezone.now())
     if created == True:
         cart.cart_date = timezone.now()
     order_state = Order.objects.filter(user=request.user, order_status=False)
@@ -75,6 +76,7 @@ def add_to_cart(request, id):
         messages.info(request, "Product Added to the cart")
     cart.save()
     return redirect('detail-product', id=id)
+
 
 @login_required
 def remove_from_cart(request, id):
@@ -101,9 +103,11 @@ def remove_from_cart(request, id):
         messages.warning(request, "No items in the cart")
     return redirect('detail-product', id=id)
 
+
 @login_required
 def order_confirm(request):
-    Cart.objects.filter(user = request.user, cart_status=False).update(cart_status = True)
+    Cart.objects.filter(user=request.user, cart_status=False).update(
+        cart_status=True)
     order = Order.objects.filter(user=request.user, order_status=False)[0]
     order.order_status = True
     order.order_date = timezone.now()

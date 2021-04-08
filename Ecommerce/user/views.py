@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib import messages
-from shop.models import Product, Cart, Order
+from shop.models import Order
 
 # Create your views here.
 
@@ -57,7 +57,7 @@ def register(request):
         form = UserRegisterationForm()
     return render(request, 'user/register.html', {'form': form})
 
-
+@login_required
 def past_orders(request):
     orders = Order.objects.filter(user = request.user, order_status=True)
     return render(request, 'user/pastOrders.html', {'orders': orders})

@@ -4,6 +4,7 @@ from .models import Profile
 from django.contrib.auth.models import User
 from django.db import transaction
 
+
 class UserRegisterationForm(UserCreationForm):
     phone_number = forms.CharField(required=True)
     email = forms.EmailField(required=True)
@@ -40,14 +41,12 @@ class UserUpdateForm(forms.ModelForm):
         fields = ['username', 'first_name', 'last_name', 'email']
 
 
-
 class ProfileUpdateForm(forms.ModelForm):
     phone_number = forms.CharField()
-    address = forms.CharField() 
-    state = forms.CharField() 
+    address = forms.CharField()
+    state = forms.CharField()
     city = forms.CharField()
 
     class Meta:
         model = Profile
-        fields = ['phone_number','address','state','city', 'zipcode']
-
+        fields = ['phone_number', 'address', 'state', 'city', 'zipcode']
